@@ -12,27 +12,20 @@ import jakarta.servlet.annotation.*;
 @WebServlet(name = "formularioHabitacionServlet", value = "/formHabServlet")
 public class FormularioHabitacionServlet extends HttpServlet {
 
-    HabitacionServicio habitacionServicio = new HabitacionServicio();
-
-    public void init() {
-
+    public void init(){
     }
-
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        List<Habitacion> listaDeHabitaciones = habitacionServicio.getHabitaciones();
-        request.setAttribute("listaDeHabitaciones", listaDeHabitaciones);
-        request.getRequestDispatcher("formularioReserva.jsp").forward(request, response);
-    }
-
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String nombre  = request.getParameter("nombre");
-        String email = request.getParameter("email");
-        String dias = request.getParameter("dias");
+        HttpSession session = request.getSession();
+        String nombre = (String) session.getAttribute("nombre");
+        String email = (String) session.getAttribute("email");
+        String dias = (String) session.getAttribute("dias");
+        String idHbSeleccionado = request.getParameter("idHb");
 
         request.setAttribute("nombre", nombre);
         request.setAttribute("email", email);
         request.setAttribute("dias", dias);
+        request.setAttribute("idHb", idHbSeleccionado);
 
         request.getRequestDispatcher("reserva.jsp").forward(request, response);
     }
